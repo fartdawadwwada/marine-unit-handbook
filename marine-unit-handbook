@@ -1,0 +1,687 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Marine Unit — Tactical Handbook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root{
+  --ground:#EEF2F3;
+  --surface:#FFFFFF;
+  --sunk:#E2E9EB;
+  --ink:#141B1F;
+  --muted:#5A6B70;
+  --line:#CFDADD;
+  --line-soft:#E1E9EB;
+  --tide:#0E5C68;
+  --tide-soft:#E1EFEE;
+  --hazard:#B0451F;
+  --hazard-soft:#F8E6DE;
+  --sand:#8A6B3A;
+
+  --sans:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  --cond:"IBM Plex Sans Condensed","IBM Plex Sans",-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#0D1315; --surface:#161D1F; --sunk:#1C2427; --ink:#E4EAEB;
+    --muted:#8FA0A3; --line:#293336; --line-soft:#1F2729;
+    --tide:#5FC2C9; --tide-soft:#132B2C; --hazard:#EE8256; --hazard-soft:#2B1810; --sand:#C9A46B;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0D1315; --surface:#161D1F; --sunk:#1C2427; --ink:#E4EAEB;
+  --muted:#8FA0A3; --line:#293336; --line-soft:#1F2729;
+  --tide:#5FC2C9; --tide-soft:#132B2C; --hazard:#EE8256; --hazard-soft:#2B1810; --sand:#C9A46B;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--ground);color:var(--ink);
+  font-family:var(--sans);font-size:16px;line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:var(--tide)}
+:focus-visible{outline:2px solid var(--tide);outline-offset:2px;border-radius:2px}
+
+.mast{background:var(--surface);border-bottom:1px solid var(--line)}
+.mast-in{
+  max-width:1180px;margin:0 auto;padding:40px 28px 30px;
+  display:flex;flex-wrap:wrap;align-items:flex-end;gap:24px 40px;
+}
+.mark{display:flex;flex-direction:column;gap:6px;min-width:min(100%,330px)}
+.eyebrow{font-family:var(--cond);font-weight:700;font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.wordmark{font-family:var(--cond);font-weight:700;font-size:clamp(46px,8vw,74px);line-height:.9;letter-spacing:.02em;margin:0;display:flex;align-items:baseline;gap:14px}
+.wordmark .bar{display:inline-block;width:clamp(28px,4.5vw,42px);height:7px;background:var(--tide);transform:translateY(-9px)}
+.expand{font-size:14.5px;color:var(--muted)}
+.mast-meta{flex:1 1 300px;display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.mast-meta div{background:var(--surface);padding:11px 13px}
+.mast-meta dt{font-family:var(--cond);font-weight:700;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 3px}
+.mast-meta dd{margin:0;font-size:13.5px;font-weight:500;line-height:1.35}
+
+.shell{max-width:1180px;margin:0 auto;padding:0 28px 90px;display:grid;grid-template-columns:216px minmax(0,1fr);gap:52px;align-items:start}
+nav.index{position:sticky;top:20px;padding:30px 0 0}
+nav.index h2{font-family:var(--cond);font-weight:700;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:0 0 12px}
+nav.index ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+nav.index a{display:grid;grid-template-columns:24px 1fr;gap:8px;align-items:baseline;padding:7px 0;font-size:13.5px;color:var(--muted);text-decoration:none;border-top:1px solid var(--line-soft);line-height:1.3;cursor:pointer}
+nav.index li:last-child a{border-bottom:1px solid var(--line-soft)}
+nav.index a span:first-child{font-family:var(--mono);font-size:11.5px;font-weight:500}
+nav.index a:hover{color:var(--ink)}
+nav.index a.on{color:var(--tide);font-weight:600}
+nav.index a.on span:first-child{color:var(--hazard)}
+
+main{padding-top:30px;min-width:0}
+section{display:none;margin:0 0 12px;scroll-margin-top:20px}
+section.active{display:block;animation:fade .18s ease}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+.sec-head{display:flex;align-items:baseline;gap:12px;margin:0 0 6px;flex-wrap:wrap}
+.sec-num{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--hazard);letter-spacing:.05em}
+h2.sec{font-family:var(--cond);font-weight:700;font-size:clamp(27px,3.6vw,35px);line-height:1.1;margin:0}
+.sec-rule{height:2px;background:var(--ink);opacity:.85;margin:0 0 22px}
+h3{font-family:var(--cond);font-weight:700;font-size:20px;line-height:1.25;margin:32px 0 8px}
+h4{font-family:var(--cond);font-weight:700;font-size:12px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);margin:22px 0 8px}
+p{margin:0 0 14px;max-width:66ch}
+.lede{font-size:17.5px;line-height:1.55;color:var(--muted);max-width:62ch;margin-bottom:20px}
+strong{font-weight:600}
+code{font-family:var(--mono);font-size:.85em;background:var(--sunk);padding:1.5px 5px;border-radius:2px;color:var(--ink);border:1px solid var(--line-soft);white-space:nowrap}
+
+ul.bul{list-style:none;margin:0 0 16px;padding:0;display:flex;flex-direction:column;gap:7px;max-width:66ch}
+ul.bul li{position:relative;padding-left:19px}
+ul.bul li::before{content:"";position:absolute;left:2px;top:.62em;width:6px;height:6px;background:var(--tide)}
+ol.steps{list-style:none;margin:0 0 18px;padding:0 0 0 4px;counter-reset:s;display:flex;flex-direction:column;gap:9px;max-width:66ch;border-left:1px solid var(--line)}
+ol.steps li{counter-increment:s;position:relative;padding-left:38px}
+ol.steps li::before{content:counter(s,decimal-leading-zero);position:absolute;left:0;top:.15em;font-family:var(--mono);font-size:11.5px;font-weight:600;color:var(--muted);background:var(--ground);padding:0 8px 0 6px}
+
+.note{display:grid;grid-template-columns:auto 1fr;gap:0 14px;align-items:start;background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--tide);padding:14px 16px;margin:16px 0 20px;max-width:66ch}
+.note.hz{border-left-color:var(--hazard)}
+.note .tag{font-family:var(--cond);font-weight:700;font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--tide);white-space:nowrap;padding-top:4px}
+.note.hz .tag{color:var(--hazard)}
+.note p{margin:0;font-size:15px;max-width:none}
+
+.tw{overflow-x:auto;margin:14px 0 22px;border:1px solid var(--line);background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:14.5px;min-width:440px}
+th{text-align:left;font-family:var(--cond);font-weight:700;font-size:11px;letter-spacing:.13em;text-transform:uppercase;background:var(--ink);color:var(--ground);padding:9px 13px;white-space:nowrap}
+td{padding:9px 13px;border-top:1px solid var(--line-soft);vertical-align:top;line-height:1.48}
+tbody tr:nth-child(even) td{background:var(--sunk)}
+td.k{font-weight:600;white-space:nowrap}
+td.mono{font-family:var(--mono);font-size:13px;color:var(--hazard);font-weight:500}
+
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);margin:16px 0 22px}
+.vs > div{background:var(--surface);padding:16px 17px}
+.vs h4{margin:0 0 10px}
+.vs ul.bul{margin:0;max-width:none}
+.vs .yes li::before{background:var(--tide)}
+.vs .no li::before{background:var(--hazard)}
+
+.rules{display:grid;grid-template-columns:repeat(auto-fill,minmax(228px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);margin:16px 0 22px}
+.rules div{background:var(--surface);padding:14px 15px;display:flex;gap:11px;align-items:flex-start}
+.rules b{font-family:var(--mono);font-size:12px;color:var(--hazard);font-weight:600;padding-top:2px}
+.rules p{margin:0;font-size:14.5px;line-height:1.45;font-weight:500}
+
+figure{margin:20px 0 26px}
+.plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(258px,1fr));gap:18px}
+.plan{background:var(--surface);border:1px solid var(--line);padding:14px}
+.plan svg{display:block;width:100%;height:auto}
+.plan .cap{font-family:var(--cond);font-weight:700;font-size:12px;letter-spacing:.11em;text-transform:uppercase;margin:0 0 10px}
+.plan .sub{font-size:13px;color:var(--muted);margin:10px 0 0;line-height:1.45}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:12px;font-size:12.5px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.legend i{width:11px;height:11px;display:inline-block;border-radius:1px}
+
+footer{border-top:1px solid var(--line);margin-top:26px;padding:22px 0 0;font-size:13px;color:var(--muted);display:flex;flex-wrap:wrap;gap:6px 18px}
+footer .mono{font-family:var(--mono);font-size:12px}
+
+@media (max-width:880px){
+  .shell{grid-template-columns:1fr;gap:0;padding:0 20px 70px}
+  nav.index{position:static;padding:24px 0 18px;border-bottom:1px solid var(--line)}
+  nav.index ol{flex-direction:row;flex-wrap:wrap;gap:6px}
+  nav.index a{border:1px solid var(--line);padding:5px 10px;grid-template-columns:auto auto;gap:6px}
+  nav.index li:last-child a{border-bottom:1px solid var(--line)}
+  .mast-in{padding:32px 20px 26px}
+  .vs{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="mast">
+  <div class="mast-in">
+    <div class="mark">
+      <p class="eyebrow">U.S. Park Rangers &middot; Tactical Subdivision</p>
+      <h1 class="wordmark">MARINE UNIT<span class="bar"></span></h1>
+      <p class="expand">Ridge work, tunnel breach angles &amp; Bearcat escort &mdash; field handbook</p>
+    </div>
+    <dl class="mast-meta">
+      <div><dt>Platform</dt><dd>ER:LC &mdash; Roblox</dd></div>
+      <div><dt>Audience</dt><dd>Marine Unit operators</dd></div>
+      <div><dt>Version</dt><dd>1.0 &middot; Sept 2026</dd></div>
+      <div><dt>Waterborne</dt><dd>Placeholder &mdash; see &sect;07</dd></div>
+    </dl>
+  </div>
+</header>
+
+<div class="shell">
+
+<nav class="index" aria-label="Handbook sections">
+  <h2>Sections</h2>
+  <ol>
+    <li><a href="#s0"><span>00</span><span>Purpose &amp; scope</span></a></li>
+    <li><a href="#s1"><span>01</span><span>Team &amp; roles</span></a></li>
+    <li><a href="#s2"><span>02</span><span>Ridge &amp; mountain</span></a></li>
+    <li><a href="#s3"><span>03</span><span>Tunnel angles</span></a></li>
+    <li><a href="#s4"><span>04</span><span>Tunnel breaches</span></a></li>
+    <li><a href="#s5"><span>05</span><span>Solo breach</span></a></li>
+    <li><a href="#s6"><span>06</span><span>Bearcat escort</span></a></li>
+    <li><a href="#s7"><span>07</span><span>Waterborne</span></a></li>
+    <li><a href="#s8"><span>08</span><span>Comms &amp; callouts</span></a></li>
+    <li><a href="#s9"><span>09</span><span>Quick reference</span></a></li>
+  </ol>
+</nav>
+
+<main>
+
+<section id="s0">
+  <div class="sec-head"><span class="sec-num">00</span><h2 class="sec">Purpose &amp; Scope</h2></div>
+  <div class="sec-rule"></div>
+  <p class="lede">The Marine Unit is the Park Rangers' tactical subdivision built for rough terrain &mdash; mountains, tunnels and shoreline the standard Ranger Tac element isn't built to work.</p>
+  <p>It fields riflemen who hold high ground and stay unseen doing it, a breaching element trained on tunnels and culverts instead of buildings and doorways, and a Bearcat crew that pulls people out of ground nothing else on the roster can reach.</p>
+  <div class="note">
+    <span class="tag">Platform</span>
+    <p>This is ER:LC (Roblox) roleplay content. Every technique below runs on the game's actual mechanics &mdash; nothing here assumes equipment or ordnance ER:LC doesn't have, and where the game is missing something, this handbook says so instead of inventing it.</p>
+  </div>
+  <p>This handbook covers ridge and mountain positioning for designated marksmen and riflemen, reading and breaching tunnels including solo entries, Bearcat-supported evacuation of civilians from hard-to-reach terrain, and a deliberately light placeholder for the waterborne element until ER:LC's boat system is updated.</p>
+</section>
+
+<section id="s1">
+  <div class="sec-head"><span class="sec-num">01</span><h2 class="sec">Team Composition &amp; Roles</h2></div>
+  <div class="sec-rule"></div>
+  <p>Five to seven, depending on terrain. Never fewer than four on a tunnel job &mdash; below that you lose either the entry element or rear security.</p>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Callsign</th><th>Role</th><th>Job</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">MU-1</td><td class="k">Team Leader</td><td>Calls the plan, the breach and the route. Runs the radio. Does not breach or take point.</td></tr>
+        <tr><td class="mono">MU-2</td><td class="k">Breacher</td><td>Reads the tunnel mouth or door, opens it, steps clear, becomes last man in.</td></tr>
+        <tr><td class="mono">MU-3</td><td class="k">Point</td><td>First through. Takes the angle you can't see from the mouth and holds it.</td></tr>
+        <tr><td class="mono">MU-4</td><td class="k">Cover</td><td>Second through. Takes the opposite angle, watches Point's back.</td></tr>
+        <tr><td class="mono">MU-5</td><td class="k">Designated Marksman</td><td>Works the ridge or high ground above the objective. Does not enter tunnels. Calls movement the entry element can't see.</td></tr>
+        <tr><td class="mono">MU-6</td><td class="k">Bearcat Operator</td><td>Stages and drives the Bearcat. Stays with the vehicle unless called forward for an extraction.</td></tr>
+        <tr><td class="mono">MU-7</td><td class="k">Coxswain</td><td>Boat element lead. Scope is placeholder for now &mdash; see &sect;07.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <ul class="bul">
+    <li>The DM slot is the highest-value position on a ridge job and the easiest to waste. One rifleman calling &ldquo;two subjects moved to the east face&rdquo; is worth more than putting a second team on the slope.</li>
+    <li>The Bearcat operator's weapon stays on the vehicle, not in their hands &mdash; if MU-6 is off the truck, nobody is driving it out.</li>
+    <li>Whoever reaches a downed person first becomes medical, and says so out loud.</li>
+  </ul>
+</section>
+
+<section id="s2">
+  <div class="sec-head"><span class="sec-num">02</span><h2 class="sec">Ridge &amp; Mountain Work</h2></div>
+  <div class="sec-rule"></div>
+  <p>Rangers already have the advantage here &mdash; green and tan that disappear into the terrain the Marine Unit works every day. Most teams waste it by walking the actual ridgeline, which is the one line on a mountain where you're visible from every direction at once.</p>
+
+  <h3>Work the military crest, not the top</h3>
+  <p>The skyline is the ridge's exact top edge &mdash; anyone below you on either side sees your whole outline against open sky the second you cross it. The military crest is the line just below that top edge, on the side facing your objective. From there you can still see down the slope, but you've got the mountain itself as a backdrop instead of sky.</p>
+
+  <figure>
+    <div class="plans">
+      <div class="plan">
+        <p class="cap">Skyline vs. military crest</p>
+        <svg viewBox="0 0 260 180" role="img" aria-label="Side view of a ridge: a rifleman on the crest is outlined against open sky, while a rifleman just below the crest has the mountain behind him.">
+          <path d="M0 176 C34 176 58 54 104 54 C152 54 172 132 260 132 L260 180 L0 180 Z" fill="var(--sunk)" stroke="var(--line)" stroke-width="2"/>
+          <circle cx="104" cy="38" r="11" fill="var(--hazard)"/>
+          <text x="104" y="43" text-anchor="middle" fill="#fff" font-family="IBM Plex Mono, monospace" font-size="12" font-weight="600">&#10007;</text>
+          <text x="104" y="20" text-anchor="middle" fill="var(--hazard)" font-family="IBM Plex Sans Condensed, sans-serif" font-size="11" font-weight="700" letter-spacing="1">ON THE SKYLINE</text>
+          <g fill="var(--tide)" opacity="0.5">
+            <path d="M150 96 l12 26 l-24 0 Z"/><path d="M168 106 l12 26 l-24 0 Z"/>
+          </g>
+          <circle cx="142" cy="86" r="11" fill="var(--tide)"/>
+          <text x="142" y="91" text-anchor="middle" fill="#fff" font-family="IBM Plex Mono, monospace" font-size="12" font-weight="600">&#10003;</text>
+          <text x="186" y="80" fill="var(--tide)" font-family="IBM Plex Sans Condensed, sans-serif" font-size="11" font-weight="700" letter-spacing="1">MILITARY CREST</text>
+          <text x="8" y="168" fill="var(--muted)" font-family="IBM Plex Sans, sans-serif" font-size="11">keep the mountain behind you, not sky</text>
+        </svg>
+        <p class="sub">A body-length below the top edge is enough to trade the skyline for a rock-and-tree backdrop.</p>
+      </div>
+      <div class="plan">
+        <p class="cap">Approach line</p>
+        <svg viewBox="0 0 260 180" role="img" aria-label="Top-down view of a slope: a direct route straight up the exposed face versus a route that parallels the ridge below the crest, moving cover to cover.">
+          <rect x="10" y="10" width="240" height="160" fill="var(--sunk)"/>
+          <path d="M40 160 L120 20" stroke="var(--hazard)" stroke-width="2.4" fill="none" stroke-dasharray="6 5" stroke-linecap="round"/>
+          <text x="34" y="18" fill="var(--hazard)" font-family="IBM Plex Sans Condensed, sans-serif" font-size="10.5" font-weight="700" letter-spacing="1">EXPOSED &mdash; DON'T</text>
+          <path d="M150 162 C 140 130, 210 118, 190 88 C 172 62, 226 46, 214 22" stroke="var(--tide)" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+          <path d="M214 22 l-11 3 m11 -3 l1 11" stroke="var(--tide)" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+          <circle cx="150" cy="162" r="7" fill="var(--tide)"/>
+          <g fill="var(--muted)" opacity="0.55">
+            <circle cx="188" cy="90" r="5"/><circle cx="212" cy="46" r="5"/>
+          </g>
+          <text x="150" y="176" fill="var(--tide)" font-family="IBM Plex Sans Condensed, sans-serif" font-size="10.5" font-weight="700" letter-spacing="1">COVER TO COVER, BELOW THE CREST</text>
+        </svg>
+        <p class="sub">Rocks and treeline mark the route. A straight climb up open rock is a straight line of sight for anyone watching the slope.</p>
+      </div>
+    </div>
+    <div class="legend">
+      <span><i style="background:var(--tide)"></i> Correct position / route</span>
+      <span><i style="background:var(--hazard)"></i> Exposed / avoid</span>
+    </div>
+  </figure>
+
+  <div class="tw">
+    <table>
+      <thead><tr><th></th><th>On the skyline</th><th>On the military crest</th></tr></thead>
+      <tbody>
+        <tr><td class="k">Silhouette</td><td>Full outline against open sky, visible for a long way</td><td>Rock or tree line behind you, outline breaks up</td></tr>
+        <tr><td class="k">View down-slope</td><td>Full view, but so does everyone below</td><td>Same view, minus the exposure</td></tr>
+        <tr><td class="k">Correct move</td><td>Never hold this line</td><td>Standard firing and observation position</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Moving the line</h3>
+  <ol class="steps">
+    <li>Pick a route that parallels the ridge just below the crest &mdash; not along the top, not straight up the exposed face.</li>
+    <li>Move from cover to cover: boulders, treelines, dead ground folds. Never cross open rock or bare slope without a reason.</li>
+    <li>Single file, five to ten meters between each rifleman. A tight group is one sightline away from being spotted and dropped together.</li>
+    <li>Match your pace to the terrain. Loose scree and dry brush are loud &mdash; slow down on both.</li>
+    <li>When you stop, get low and get a backdrop. Standing still and upright in the open is the single most visible thing a rifleman can do on a mountain.</li>
+  </ol>
+
+  <h3>Picking a firing position</h3>
+  <ul class="bul">
+    <li><strong>Backdrop first.</strong> A position is only as good as what's behind you. Rock, brush or shadow &mdash; never open sky or a bare light-colored slope.</li>
+    <li><strong>Off the crest, not on it.</strong> Set up a body-length below the top edge so your head and shoulders don't break the skyline when you post up to shoot.</li>
+    <li><strong>Two ways out.</strong> Never take a position with only one route off it. If you're spotted, you need a route down that isn't back through your own sightline.</li>
+    <li><strong>Alternate position picked before you need it.</strong> If the primary gets compromised, the team already knows where MU-5 is falling back to.</li>
+  </ul>
+
+  <h3>Staying unseen while you work</h3>
+  <ul class="bul">
+    <li><strong>Uniform.</strong> Green and olive in treeline and brush, tan and grey on open rock, dark green to near-black after dark. Save anything high-visibility for when you want to be seen.</li>
+    <li><strong>No unnecessary movement.</strong> A scope glinting or a rifleman standing up to stretch is what gets a position made, not the shot itself.</li>
+    <li><strong>Voice discipline.</strong> The DM doesn't shout across open ground &mdash; short radio calls only, and nothing said within earshot of the slope below.</li>
+    <li><strong>The DM does not become the assault.</strong> MU-5 holds the high ground, watches, and reports. Coming off the ridge to join the entry team gives up the one advantage the whole position was built for.</li>
+  </ul>
+
+  <div class="note hz">
+    <span class="tag">The test</span>
+    <p>If someone on the objective glassed this ridgeline right now, would they find you? If yes, you're not on the military crest &mdash; move down and re-check your backdrop before you do anything else.</p>
+  </div>
+</section>
+
+<section id="s3">
+  <div class="sec-head"><span class="sec-num">03</span><h2 class="sec">Tunnel Operations &mdash; Reading Angles</h2></div>
+  <div class="sec-rule"></div>
+  <p>A tunnel is one axis, not four walls with windows. There's no outside overwatch once you're in it, sound carries the length of the passage, and every junction is a place where trouble can start behind you as easily as in front. Angles decide almost everything about how a bend gets crossed safely.</p>
+
+  <h3>Reading the mouth</h3>
+  <p>Before anyone commits past the entrance:</p>
+  <ol class="steps">
+    <li><strong>Width and height</strong> &mdash; does it take the whole element single file, or two abreast?</li>
+    <li><strong>Straight run or bend</strong> &mdash; can you see the far end from here, or does it turn out of sight?</li>
+    <li><strong>Junctions</strong> &mdash; mark every branch you can see before you pass the point where you could still back out cleanly.</li>
+    <li><strong>Light</strong> &mdash; note where it's lit and where it goes dark. Dark sections are where the pace slows.</li>
+  </ol>
+
+  <h3>How angles work at a bend</h3>
+  <p>Every bend is really two things: a wall that blocks your view, and an angle where that wall stops blocking it. The goal isn't reaching the corner faster &mdash; it's opening that angle in slices, from a distance, before you're ever standing in it.</p>
+
+  <figure>
+    <div class="plans">
+      <div class="plan">
+        <p class="cap">Slicing an L-bend</p>
+        <svg viewBox="0 0 260 190" role="img" aria-label="Top-down view of a corridor bend: a wide outside arc reveals the new corridor gradually, while the tight inside path reveals it all at once at the corner.">
+          <rect x="20" y="18" width="90" height="150" fill="var(--sunk)" stroke="var(--ink)" stroke-width="2"/>
+          <rect x="20" y="18" width="220" height="70" fill="var(--sunk)" stroke="var(--ink)" stroke-width="2"/>
+          <rect x="110" y="88" width="130" height="80" fill="var(--hazard)" opacity="0.12"/>
+          <path d="M150 162 C 100 150, 70 110, 70 70" stroke="var(--tide)" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+          <path d="M70 70 l-3 11 m3 -11 l10 4" stroke="var(--tide)" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+          <circle cx="150" cy="162" r="8" fill="var(--tide)"/>
+          <text x="150" y="166" text-anchor="middle" fill="#fff" font-family="IBM Plex Mono, monospace" font-size="10" font-weight="600">1</text>
+          <rect x="100" y="20" width="26" height="66" fill="var(--hazard)" opacity="0.85"/>
+          <text x="113" y="56" text-anchor="middle" fill="#fff" font-family="IBM Plex Mono, monospace" font-size="13" font-weight="600">H</text>
+          <text x="150" y="132" text-anchor="middle" fill="var(--hazard)" font-family="IBM Plex Sans Condensed, sans-serif" font-size="11" font-weight="700" letter-spacing="1">UNOPENED SLIVER</text>
+          <text x="34" y="182" fill="var(--tide)" font-family="IBM Plex Sans Condensed, sans-serif" font-size="10.5" font-weight="700" letter-spacing="1">OUTSIDE ARC &mdash; SLICE FROM HERE</text>
+        </svg>
+        <p class="sub">Walking the outside of the turn opens the new corridor a little at a time. Hugging the inside wall (H) reveals it all at once, right at the corner.</p>
+      </div>
+    </div>
+    <div class="legend">
+      <span><i style="background:var(--tide)"></i> Operator, outside arc</span>
+      <span><i style="background:var(--hazard);opacity:.85"></i> Inside wall / where he'd be</span>
+      <span><i style="background:var(--hazard);opacity:.2"></i> Unopened corridor beyond the bend</span>
+    </div>
+  </figure>
+
+  <ul class="bul">
+    <li><strong>Take the outside of the turn.</strong> Hugging the inside wall of a bend keeps you hidden longest, but reveals the whole new corridor in one step, all at once, right as you're closest to it. Walking wide on the outside opens the same corridor gradually, in a widening wedge, while you're still several steps back from the corner itself.</li>
+    <li><strong>Slice as you go.</strong> Each step along that outside arc reveals a little more of what's past the bend. Stop, look at the new sliver, then take the next step &mdash; don't walk the whole arc in one motion.</li>
+    <li><strong>The part you still can't see is where he is.</strong> Whatever sliver of the new corridor hasn't opened up yet is the one place someone could be standing without you knowing about it. That's the piece you're solving for, not the part you can already see.</li>
+    <li><strong>Never round a corner at speed.</strong> A fast corner turns &ldquo;I can see one slice at a time&rdquo; into &ldquo;I'm suddenly standing in the open with someone I haven't cleared yet.&rdquo;</li>
+  </ul>
+
+  <h3>Junction types</h3>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Junction</th><th>What it gives you</th><th>How to clear it</th></tr></thead>
+      <tbody>
+        <tr><td class="k">Straight run</td><td>Full sightline once you're in it</td><td>Confirm the far end before committing the whole element</td></tr>
+        <tr><td class="k">L-bend (90&deg;)</td><td>One blind corridor past the turn</td><td>Slice the outside arc, hold the near corner until the far leg is open</td></tr>
+        <tr><td class="k">T-junction</td><td>Two blind corridors, opposite directions</td><td>Split the element &mdash; one operator opens each leg at the same time, neither commits alone</td></tr>
+        <tr><td class="k">Y-junction</td><td>Two blind corridors at a shallow angle</td><td>Slower than a T &mdash; the two legs overlap in your eyeline longer before they separate</td></tr>
+        <tr><td class="k">Cross junction</td><td>Three blind corridors at once</td><td>Contain first. Don't push through a live cross junction without a second element covering at least one leg</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note">
+    <span class="tag">Rule of thumb</span>
+    <p>The tighter the angle, the more of the new leg opens up in your first slice. The wider the angle, the more steps &mdash; and patience &mdash; it takes before you've actually cleared it.</p>
+  </div>
+
+  <h3>Working a bend as an element</h3>
+  <ol class="steps">
+    <li>Point holds just short of the corner, weapon toward the bend, and starts the slice from the outside arc.</li>
+    <li>Cover holds the corridor behind &mdash; a cleared bend doesn't matter if something opens up at your back.</li>
+    <li>Point calls what the slice reveals as it opens: <code>CLEAR TO THE BEND</code> or <code>CONTACT, [distance]</code>.</li>
+    <li>Only once the visible arc is clear does Point cross the corner itself, tight to the outside wall, weapon leading.</li>
+    <li>Breacher and the rest of the element flow through behind, keeping spacing &mdash; bunching at a cleared corner just moves the fatal funnel from the bend to the hallway.</li>
+  </ol>
+</section>
+
+<section id="s4">
+  <div class="sec-head"><span class="sec-num">04</span><h2 class="sec">Tunnel Breach Types</h2></div>
+  <div class="sec-rule"></div>
+  <div class="note">
+    <span class="tag">In the game</span>
+    <p>Door Ram is still the only real mechanical breach tool for a gated or locked tunnel entrance. There's no in-game explosive or demolition charge &mdash; nothing here trains one, and nothing here claims ER:LC has one.</p>
+  </div>
+  <ol class="steps">
+    <li><strong>Manual.</strong> Try the gate or door before anything else. Most maintenance and access doors open on interaction, and ramming one that was already unlocked is the most common way a breach gets flagged.</li>
+    <li><strong>Mechanical (Door Ram).</strong> Stack sets on the hinge side. Breacher rams at handle height, steps back and out of the funnel, drops the ram, transitions to primary, becomes last man in.</li>
+    <li><strong>Declared breach.</strong> For a reinforced or blocked entrance doctrine would otherwise blow: breacher announces it on radio, holds a mandatory five-second count &mdash; never shortened &mdash; then the element treats the entrance as open and flows on the count.</li>
+    <li><strong>Multi-point.</strong> Two known entrances into the same tunnel run: split the element, breach both within the same radio count so nobody ends up caught between two open ends with no one covering either.</li>
+    <li><strong>Obstruction clear.</strong> A collapsed or blocked section isn't a breach &mdash; mark it and route the element around through a known secondary passage rather than forcing a way through blind.</li>
+  </ol>
+  <h3>Failed breach</h3>
+  <p>If the door or gate doesn't give: breacher calls <code>FAILED, FAILED</code>, the stack holds off the entrance instead of collapsing forward into it, and the leader calls a second strike or sends the element to an alternate entrance. The stack never crowds the entrance while it decides what to do next.</p>
+</section>
+
+<section id="s5">
+  <div class="sec-head"><span class="sec-num">05</span><h2 class="sec">Solo Breach Procedure</h2></div>
+  <div class="sec-rule"></div>
+  <p class="lede">A solo breach is a one-operator entry into a tunnel or gated passage when no second element is available and waiting costs someone their safety. It is the exception, not the default &mdash; the default is always to wait for backup.</p>
+
+  <h3>When it's authorized</h3>
+  <div class="vs">
+    <div>
+      <h4>Authorized</h4>
+      <ul class="bul yes">
+        <li>Active harm in progress with no element within response time</li>
+        <li>Isolated single subject, contained, no hostages</li>
+        <li>A ranger down inside the tunnel</li>
+        <li>Training and recertification</li>
+      </ul>
+    </div>
+    <div>
+      <h4>Not authorized</h4>
+      <ul class="bul no">
+        <li>Multiple confirmed subjects inside</li>
+        <li>A hostage situation where containment holds and backup is inbound</li>
+        <li>Unknown interior with no active threat</li>
+        <li>Because you don't want to wait</li>
+      </ul>
+    </div>
+  </div>
+  <div class="note hz">
+    <span class="tag">Hardest rule</span>
+    <p>If containment holds and nobody is being hurt, you wait. Impatience is the most common reason a solo breach goes wrong.</p>
+  </div>
+
+  <h3>The mindset</h3>
+  <ul class="bul">
+    <li><strong>You clear an angle, not a tunnel.</strong> A full clear takes a team. Solo, you clear the geometry in front of you piece by piece and accept that something behind the next bend is always unconfirmed.</li>
+    <li><strong>Speed is not your friend.</strong> You can't outrun a threat you didn't see coming.</li>
+    <li><strong>Every closed gate is a teammate.</strong> A section you seal behind you is a direction you no longer have to watch.</li>
+    <li><strong>Cover replaces numbers.</strong> You should never be standing in open tunnel with nothing beside you.</li>
+  </ul>
+
+  <h3>The sequence</h3>
+  <h4>Phase 1 &mdash; Approach</h4>
+  <ol class="steps">
+    <li>Stage out of sight of the entrance.</li>
+    <li>Transmit before you move: <code>MU-[callsign] making solo entry, [location], [reason]. Start me backup.</code></li>
+    <li>Don't go in until that call is out.</li>
+  </ol>
+  <h4>Phase 2 &mdash; At the Entrance</h4>
+  <ol class="steps">
+    <li>Read it: width, straight or bent, junctions visible from here.</li>
+    <li>Try it first &mdash; the manual breach is always the free one.</li>
+    <li>Locked with no ram and no alternate entrance? You wait for backup, full stop.</li>
+  </ol>
+  <h4>Phase 3 &mdash; Threshold</h4>
+  <ol class="steps">
+    <li>Open it and don't step through yet.</li>
+    <li>Slice the visible angle from outside, the same as a full element would.</li>
+    <li>Identify where the blind piece of the passage is &mdash; that's where he is.</li>
+  </ol>
+  <h4>Phase 4 &mdash; Entry</h4>
+  <ol class="steps">
+    <li>One step in, immediately off the centerline, back to a wall.</li>
+    <li>Clear the nearest blind angle first.</li>
+    <li>Don't advance until it's confirmed.</li>
+  </ol>
+  <h4>Phase 5 &mdash; Working the Tunnel</h4>
+  <ol class="steps">
+    <li>Hold one wall &mdash; don't switch sides mid-clear.</li>
+    <li>Close every gate or door behind you.</li>
+    <li>Slice every bend; never round one at speed.</li>
+    <li>Call <code>MU-[callsign], clear to [landmark], moving to [next]</code> at each stage &mdash; if the radio goes quiet, backup knows something happened.</li>
+  </ol>
+  <h4>Phase 6 &mdash; Contact</h4>
+  <ol class="steps">
+    <li>Get to cover before anything else.</li>
+    <li>Give commands from cover, not from open passage.</li>
+    <li>If you're outmatched, break contact and withdraw to the entrance &mdash; an operator who pulls back and holds the entrance did the job; one who pushes deeper and goes down loses the person they went in for too.</li>
+  </ol>
+
+  <h3>The seven hard rules</h3>
+  <div class="rules">
+    <div><b>01</b><p>Never enter without transmitting your entry first.</p></div>
+    <div><b>02</b><p>Never enter a stretch of tunnel you haven't sliced from outside it.</p></div>
+    <div><b>03</b><p>Never turn your back on an open, uncleared gate.</p></div>
+    <div><b>04</b><p>Never stand still in an open bend or junction.</p></div>
+    <div><b>05</b><p>Never push deeper than you can withdraw from.</p></div>
+    <div><b>06</b><p>Never solo-breach a passage with multiple confirmed subjects.</p></div>
+    <div><b>07</b><p>If you can wait, wait.</p></div>
+  </div>
+</section>
+
+<section id="s6">
+  <div class="sec-head"><span class="sec-num">06</span><h2 class="sec">Bearcat Escort Operations</h2></div>
+  <div class="sec-rule"></div>
+  <p>The Bearcat is the Marine Unit's answer to terrain nothing else on the fleet can cross &mdash; washed-out fire roads, steep grades, riverbeds, anywhere a standard cruiser or truck gets stuck. Its job on an escort is simple: get people who are hurt, stranded, or caught between the team and a threat out to a road a normal vehicle can reach.</p>
+
+  <h3>Approved uses</h3>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Use</th><th>Looks like</th></tr></thead>
+      <tbody>
+        <tr><td class="k">Extraction</td><td>Loaded at the objective, drives the roughest leg of the route, hands off to a normal ambulance or cruiser at the nearest passable road</td></tr>
+        <tr><td class="k">Escort</td><td>Positioned between the group being moved and the direction of the threat, moving at their pace</td></tr>
+        <tr><td class="k">Rolling cover</td><td>Walking pace ahead of a group crossing exposed ground, closing the distance between two points of cover</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Prohibited uses</h3>
+  <ul class="bul">
+    <li>Driving it into or through a structure, gate or barricade to force an opening</li>
+    <li>Using it to ram another vehicle or a player</li>
+    <li>Parking it so it blocks the team's own way out</li>
+    <li>Taking it somewhere it needs to be walked out of &mdash; know the route's grade and clearance before committing the vehicle to it</li>
+  </ul>
+
+  <h3>Running an escort</h3>
+  <ol class="steps">
+    <li><strong>Stage short of the objective</strong>, out of sight if the terrain allows it, with the doors facing away from any known threat direction.</li>
+    <li><strong>MU-6 stays with the vehicle.</strong> Someone has to be able to drive it the moment loading is done.</li>
+    <li><strong>Load the people who can't self-extract first</strong> &mdash; injured, children, anyone who can't keep pace on foot.</li>
+    <li><strong>Pick the route before you move, not while moving.</strong> Off-road capability doesn't mean every route is passable &mdash; confirm the grade, water crossings and clearance ahead of time.</li>
+    <li><strong>The escort element covers the flanks, not the vehicle itself</strong> &mdash; the Bearcat's armor is the cover; riflemen watch the ground around it.</li>
+    <li><strong>Hand off at the nearest passable road.</strong> The Bearcat's job ends once a normal vehicle can take over &mdash; don't drive the whole route back to base if a shorter handoff exists.</li>
+  </ol>
+</section>
+
+<section id="s7">
+  <div class="sec-head"><span class="sec-num">07</span><h2 class="sec">Waterborne Element</h2></div>
+  <div class="sec-rule"></div>
+  <div class="note hz">
+    <span class="tag">Placeholder</span>
+    <p>This section stays intentionally light for now. ER:LC's boat system hasn't been updated with the mechanics this handbook would need to write real procedure against &mdash; boarding, positioning, towing, whatever the update ends up adding. Writing detailed doctrine against mechanics that don't exist yet would just mean rewriting it the day the update lands.</p>
+  </div>
+  <p>The Marine Unit keeps a boat element for waterway patrol and for moving people or gear across water the rest of the team can't cross on foot or by Bearcat.</p>
+  <h4>What's fixed for now</h4>
+  <ul class="bul">
+    <li>MU-7 (Coxswain) leads the element and reports to MU-1 like every other position.</li>
+    <li>The boat element supports the land element &mdash; it doesn't run independent objectives.</li>
+    <li>Full procedure (approach, boarding, escort by water) gets written into this section once ER:LC's boat mechanics are in and the team can actually test what works.</li>
+  </ul>
+</section>
+
+<section id="s8">
+  <div class="sec-head"><span class="sec-num">08</span><h2 class="sec">Comms &amp; Callouts</h2></div>
+  <div class="sec-rule"></div>
+  <p>All Marine Unit traffic runs on its own channel. MU-1 is the only one who talks to dispatch &mdash; everyone else talks to MU-1. Every transmission: who you are, what you see, where it is.</p>
+
+  <h3>Ridge &amp; observation</h3>
+  <div class="tw"><table>
+    <thead><tr><th>Call</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">MU-5 SET, [position]</td><td>Designated marksman in position and ready</td></tr>
+      <tr><td class="mono">EYES ON, [description]</td><td>Subject or vehicle spotted from the ridge</td></tr>
+      <tr><td class="mono">MOVED TO [landmark]</td><td>Subject relocated</td></tr>
+      <tr><td class="mono">COMPROMISED, FALLING BACK</td><td>Position spotted, DM moving to the alternate</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Tunnel</h3>
+  <div class="tw"><table>
+    <thead><tr><th>Call</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">AT THE MOUTH</td><td>Element staged at the entrance</td></tr>
+      <tr><td class="mono">CLEAR TO THE BEND</td><td>Slice complete, corner confirmed clear</td></tr>
+      <tr><td class="mono">CONTACT, [distance]</td><td>Subject spotted in the passage</td></tr>
+      <tr><td class="mono">FAILED, FAILED</td><td>Breach attempt didn't work</td></tr>
+      <tr><td class="mono">TUNNEL CLEAR</td><td>Whole run cleared</td></tr>
+      <tr><td class="mono">MU-[callsign] MAKING SOLO ENTRY</td><td>Solo breach starting</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Bearcat</h3>
+  <div class="tw"><table>
+    <thead><tr><th>Call</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">BEARCAT STAGED, [location]</td><td>Vehicle in position</td></tr>
+      <tr><td class="mono">LOADING</td><td>Civilians being brought aboard</td></tr>
+      <tr><td class="mono">ROLLING, [route]</td><td>Vehicle moving, route named</td></tr>
+      <tr><td class="mono">HANDOFF AT [location]</td><td>Extraction complete, transferring to a standard unit</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Universal</h3>
+  <div class="tw"><table>
+    <thead><tr><th>Call</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">HOLD, HOLD, HOLD</td><td>Everyone stops. Anyone can call it.</td></tr>
+      <tr><td class="mono">RANGER DOWN, [location]</td><td>Drop the task, go to rescue</td></tr>
+      <tr><td class="mono">CODE 4</td><td>Scene secure, stand down</td></tr>
+    </tbody>
+  </table></div>
+
+  <p>Dead air is a callout too. If a rifleman, a tunnel element or the Bearcat crew has gone quiet for more than fifteen seconds, MU-1 asks for a status check.</p>
+</section>
+
+<section id="s9">
+  <div class="sec-head"><span class="sec-num">09</span><h2 class="sec">Quick Reference</h2></div>
+  <div class="sec-rule"></div>
+  <p class="lede">One screen, no scrolling back through the manual.</p>
+
+  <div class="note">
+    <span class="tag">Ridge rule</span>
+    <p>Military crest, not skyline. Backdrop first, two ways out, alternate position picked before you need it.</p>
+  </div>
+
+  <h3>Tunnel junction picker</h3>
+  <div class="tw"><table>
+    <thead><tr><th>Junction</th><th>Clear it by</th></tr></thead>
+    <tbody>
+      <tr><td class="k">L-bend</td><td>Slicing the outside arc</td></tr>
+      <tr><td class="k">T-junction</td><td>Splitting the element, opening both legs together</td></tr>
+      <tr><td class="k">Y-junction</td><td>Same as a T, expect it to take longer</td></tr>
+      <tr><td class="k">Cross</td><td>Containing &mdash; don't push through blind</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Breach picker</h3>
+  <div class="tw"><table>
+    <thead><tr><th>Situation</th><th>Breach</th></tr></thead>
+    <tbody>
+      <tr><td class="k">Door might be unlocked</td><td>Manual</td></tr>
+      <tr><td class="k">Locked, standard door or gate</td><td>Mechanical (Door Ram)</td></tr>
+      <tr><td class="k">Reinforced, doctrine calls for a charge</td><td>Declared breach</td></tr>
+      <tr><td class="k">Two known entrances</td><td>Multi-point</td></tr>
+      <tr><td class="k">Passage physically blocked</td><td>Obstruction clear &mdash; route around</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="rules">
+    <div><b>Solo</b><p>Transmit before you enter, slice before you step, never turn your back on an open gate, withdraw before you're overmatched.</p></div>
+    <div><b>Bearcat</b><p>Off-road extraction and escort only &mdash; never a ram, never blocks its own exit, hands off at the first passable road.</p></div>
+  </div>
+
+  <footer>
+    <span class="mono">MARINE UNIT 1.0</span>
+    <span>U.S. Park Rangers &middot; Tactical Subdivision</span>
+    <span>ER:LC roleplay use only</span>
+  </footer>
+</section>
+
+</main>
+</div>
+
+<script>
+(function(){
+  var links = Array.prototype.slice.call(document.querySelectorAll('nav.index a'));
+  var sections = Array.prototype.slice.call(document.querySelectorAll('main > section'));
+  function show(id){
+    var found = false;
+    sections.forEach(function(s){
+      var on = s.id === id;
+      if(on) found = true;
+      s.classList.toggle('active', on);
+    });
+    if(!found && sections.length){ sections[0].classList.add('active'); id = sections[0].id; }
+    links.forEach(function(a){ a.classList.toggle('on', a.getAttribute('href') === '#' + id); });
+    window.scrollTo(0,0);
+    if(history.replaceState){ history.replaceState(null, '', '#' + id); }
+  }
+  links.forEach(function(a){
+    a.addEventListener('click', function(e){
+      e.preventDefault();
+      show(a.getAttribute('href').slice(1));
+    });
+  });
+  var start = (location.hash || '#s0').slice(1);
+  show(start);
+})();
+</script>
+
+</body>
+</html>
